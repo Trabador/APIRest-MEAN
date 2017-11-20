@@ -2,6 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const path = require("path");
 
 const app = express();
 
@@ -12,7 +13,13 @@ mongoose.Promise = global.Promise;
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
-app.use('/api/',api);
+app.use('/api',api);
+app.use('/', express.static(path.join(__dirname + '/public/client')));
+
+
+/*app.get('/Products/', (req,res) =>{
+    res.sendFile('/client/index.html');
+});*/
 
 function run(){
     mongoose.connect(configurator.db,{useMongoClient: true}, (err,res) =>{
