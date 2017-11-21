@@ -11,18 +11,18 @@
         <div class="jumbotron text-center">
             <h1>Mi Tienda</h1>
         </div>
-        <form>
+        <form ng-submit="sendData()">
             <div class="form-group">
                 <label for="name">Nombre Producto</label>
-                <input type="name" class="form-control" id="name">
+                <input type="name" class="form-control" id="name" ng-model="product.name">
             </div>
             <div class="form-group">
                 <label for="price">Precio:</label>
-                <input type="price" class="form-control" id="price">
+                <input type="price" class="form-control" id="price" ng-model="product.price">
             </div>
             <div class="form-group">
                 <label for="category">Caterogoria:</label>
-                <select class="form-control" id="category">
+                <select class="form-control" id="category" ng-model="product.category">
                     <option>computadoras</option>
                     <option>moviles</option>
                     <option>accesorios</option>
@@ -30,28 +30,30 @@
             </div>
             <div class="form-group">
                 <label for="description">Descripcion:</label>
-                <textarea class="form-control" rows="3" id="description"></textarea>
+                <textarea class="form-control" rows="3" id="description" ng-model="product.description">
+                </textarea>
             </div>
-            <button type="submit" class="btn btn-default">Agregar</button>
+            <button type="submit" id="submit" class="btn btn-default">{{action}}</button>
         </form>
         <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Categoria</th>
-                        <th>Descripcion</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="product in products">
-                        <td>{{product.name}}</td>
-                        <td>{{product.price | currency}}</td>
-                        <td>{{product.category}}</td>
-                        <td>{{product.description}}</td>
-                        <td><button type="button" ng-click="deleteThisProduct(product._id)"  class="btn btn-danger btn btn-primary btn-sm">Borrar</button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Categoria</th>
+                    <th>Descripcion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="product in products">
+                    <td>{{product.name}}</td>
+                    <td>{{product.price | currency}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.description}}</td>
+                    <td><button type="button" ng-click="updateThisProduct(product._id)"  class="btn btn-primary btn btn-primary btn-sm">Actualizar</button></td>
+                    <td><button type="button" ng-click="deleteThisProduct(product._id)"  class="btn btn-danger btn btn-primary btn-sm">Borrar</button></td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
