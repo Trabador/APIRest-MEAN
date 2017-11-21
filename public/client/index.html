@@ -8,10 +8,50 @@
         <script src="controller.js"></script>
     </head>
     <body ng-controller="generalCtrl">
-        <ul>
-            <li ng-repeat="prod in products">
-                <p> {{prod.name}} {{prod.price}} {{prod.category}} {{prod.description}} </p>
-            </li>        
-        </ul>
+        <div class="jumbotron text-center">
+            <h1>Mi Tienda</h1>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="name">Nombre Producto</label>
+                <input type="name" class="form-control" id="name">
+            </div>
+            <div class="form-group">
+                <label for="price">Precio:</label>
+                <input type="price" class="form-control" id="price">
+            </div>
+            <div class="form-group">
+                <label for="category">Caterogoria:</label>
+                <select class="form-control" id="category">
+                    <option>computadoras</option>
+                    <option>moviles</option>
+                    <option>accesorios</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripcion:</label>
+                <textarea class="form-control" rows="3" id="description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Agregar</button>
+        </form>
+        <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Categoria</th>
+                        <th>Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="product in products">
+                        <td>{{product.name}}</td>
+                        <td>{{product.price | currency}}</td>
+                        <td>{{product.category}}</td>
+                        <td>{{product.description}}</td>
+                        <td><button type="button" ng-click="deleteThisProduct(product._id)"  class="btn btn-danger btn btn-primary btn-sm">Borrar</button></td>
+                    </tr>
+                </tbody>
+            </table>
     </body>
 </html>
