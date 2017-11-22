@@ -1,15 +1,22 @@
+<!DOCTYPE html>
 <html ng-app="API">
     <head>
         <title>Mi Tienda de Tecnología</title>
         <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
         <script src="controller.js"></script>
     </head>
     <body ng-controller="generalCtrl">
-        <div class="jumbotron text-center">
+        <div class="jumbotron" id="start">
             <h1>Mi Tienda de Tecnología</h1>
+        </div>
+        <div>
+            <alert ng-show='alert.type' type="{{alert.type}}" close='closeAlert()'>
+                {{alert.type | uppercase}}: {{alert.message}}
+            </alert>
         </div>
         <form ng-submit="sendData()">
             <div class="form-group">
@@ -18,11 +25,13 @@
             </div>
             <div class="form-group">
                 <label for="price">Precio:</label>
-                <input type="price" class="form-control" id="price" ng-model="product.price" required>
+                <input type="number" step="any" class="form-control" id="price" ng-model="product.price" required>
             </div>
             <div class="form-group">
                 <label for="category">Caterogoria:</label>
                 <select class="form-control" id="category" ng-model="product.category" required>
+                    <!--Needed for required to work properly-->
+                    <option value=""></option>
                     <option>computadoras</option>
                     <option>moviles</option>
                     <option>accesorios</option>
@@ -33,9 +42,11 @@
                 <textarea class="form-control" rows="3" id="description" ng-model="product.description" required>
                 </textarea>
             </div>
-            <button type="submit" id="submit" class="btn btn-default">{{action}}</button>
+            <button type="submit" id="submit" class="btn btn-primary">{{action}}</button>
         </form>
-        <table class="table">
+        <br>
+        <button type="reset" id="clean" class="btn btn-primary" ng-click="cleanFields()">Restablecer</button>
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Nombre</th>
@@ -50,8 +61,16 @@
                     <td>{{product.price | currency}}</td>
                     <td>{{product.category}}</td>
                     <td>{{product.description}}</td>
-                    <td><button type="button" ng-click="updateThisProduct(product._id)"  class="btn btn-primary btn btn-primary btn-sm">Actualizar</button></td>
-                    <td><button type="button" ng-click="deleteThisProduct(product._id)"  class="btn btn-danger btn btn-primary btn-sm">Borrar</button></td>
+                    <td>
+                        <button type="button" ng-click="updateThisProduct(product._id, $index)"  class="btn btn-info btn btn-primary btn-sm">
+                            Modificar
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" ng-click="deleteThisProduct(product._id, $index)"  class="btn btn-danger btn btn-primary btn-sm">
+                            Borrar
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>

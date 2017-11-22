@@ -25,8 +25,11 @@ function showProductById(req,res){
 }
 
 function updateProductById(req,res){
-    var newData = req.body
-    model.findByIdAndUpdate(req.params.productID, newData, (err,productUpdated) =>{
+    var newData = req.body;
+    var id = req.params.productID;
+    //returns the product post update
+    var options = { new: true }; 
+    model.findByIdAndUpdate(id, newData, options, (err, productUpdated) =>{
         if(err)
             res.status(500).send({message: `Error al intentar modificar el producto. ERROR: ${err}` });
         else
@@ -56,7 +59,7 @@ function deleteProductById(req,res){
         else if(!productRemoved)
             res.status(404).send({message: `Error al intentar borrar el producto , no existe  el id ${id}`});
         else
-            res.status(200).send({message: `Producto ${productRemoved} borrado con exito`});
+            res.status(200).send({message: productRemoved});
     });
 }
 

@@ -16,11 +16,6 @@ app.use(bodyParser.json());
 app.use('/api',api);
 app.use('/', express.static(path.join(__dirname + '/public/client')));
 
-
-/*app.get('/Products/', (req,res) =>{
-    res.sendFile('/client/index.html');
-});*/
-
 function run(){
     mongoose.connect(configurator.db,{useMongoClient: true}, (err,res) =>{
         if(err)

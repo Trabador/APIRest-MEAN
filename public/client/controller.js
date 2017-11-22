@@ -1,16 +1,20 @@
-var app = angular.module("API",[]);
+var app = angular.module("API", ['ui.bootstrap']);
 
-app.controller("generalCtrl", function($scope, $http){
+app.controller("generalCtrl", function($scope, $http, $window){
     $scope.products = [];
     $scope.product = null;
+    $scope.aux = null;
     $scope.action = 'Agregar';
-
-    var req = {
-        method: 'GET',
-        url: 'http://localhost:8080/api/Product/'
+    $scope.alert = {
+        type: null,
+        message: null
     };
 
-    $http(req)
+    console.log($scope.alert);
+
+    var url = 'http://localhost:8080/api/Product/';
+
+    $http.get(url)
         .then(function succes (res){
                 $scope.products = res.data.message;
             },
@@ -18,22 +22,32 @@ app.controller("generalCtrl", function($scope, $http){
                 console.log(res);
                 $scope.products = [];
             }
-        );
+    );
 
-    $scope.deleteThisProduct = function(id){
-        var req = {
-            method: 'DELETE',
-            url: 'http://localhost:8080/api/Product/'+id
-        };
+    $scope.closeAlert = function() {
+        $scope.alert = {};
+    };
 
-        $http(req)
+    $scope.cleanFields = function(){
+        $scope.product = {};
+        $scope.action = 'Agregar';
+    }
+
+    $scope.deleteThisProduct = function(id,$index){
+        var url = 'http://localhost:8080/api/Product/'+id
+
+        $http.delete(url)
             .then(function success (res){
                 console.log(res);
-                //reload page
-                window.location.reload();
+                $scope.alert.type = 'success';
+                $scope.alert.message = 'Producto Borrado';
+                $scope.products.splice($index,1);
+                $window.scrollTo(0, 0);
             },
             function error (res){
                 console.log(res);
+                $scope.alert.type = 'danger';
+                $scope.alert.message = 'Error al borrar el producto';
             }
         );
     };
@@ -49,13 +63,15 @@ app.controller("generalCtrl", function($scope, $http){
         }    
     };
 
-    $scope.updateThisProduct = function(id){
+    $scope.updateThisProduct = function(id, $index){
         var url = 'http://localhost:8080/api/Product/'+id;
         $http.get(url)
             .then(function success (res){
                     console.log(res);
                     $scope.action = 'Actualizar';
                     $scope.product = res.data.message;
+                    $scope.aux = $index;
+                    $window.scrollTo(0, 0);
                 },
                 function error (res){
                     console.log(res);
@@ -69,11 +85,15 @@ app.controller("generalCtrl", function($scope, $http){
         $http.post(url, $scope.product)
             .then(function success (res){
                 console.log(res);
-                //reload page
-                window.location.reload();
+                $scope.alert.type = 'success';
+                $scope.alert.message = 'Producto Agregado';
+                $scope.products.push(res.data.message);
+                $window.scrollTo(0, 0);
             },
             function error (res){
                 console.log(res);
+                $scope.alert.type = 'danger';
+                $scope.alert.message = 'Error al agregar el producto';
             }
         );
         $scope.product = {};
@@ -84,16 +104,21 @@ app.controller("generalCtrl", function($scope, $http){
         $http.put(url, $scope.product)
             .then(function success (res){
                 console.log(res);
-                //reload page
+                $scope.products.splice($scope.aux,1);
+                $scope.products.splice($scope.aux,0,res.data.message);
                 $scope.action = 'Agregar';
-                window.location.reload();
+                $scope.alert.type = 'success';
+                $scope.alert.message = 'Producto Actualizado';
+                $scope.aux = null;
+                $window.scrollTo(0, 0);
             },
             function error (res){
                 console.log(res);
+                $scope.alert.type = 'danger';
+                $scope.alert.message = 'Error al actualizar el producto';
             }
         );
         $scope.product = {};
-
     };
 
 });
