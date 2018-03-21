@@ -10,11 +10,10 @@ app.controller("generalCtrl", function($scope, $http, $window){
         message: null
     };
 
-    console.log($scope.alert);
+    const root = 'https://api-product-demo.herokuapp.com';
 
-    var url = 'https://api-product-demo.herokuapp.com/api/Product/';
-
-    $http.get(url)
+    const  url_api = root+'/api/Product/';
+    $http.get(url_api)
         .then(function succes (res){
                 $scope.products = res.data.message;
             },
@@ -34,7 +33,7 @@ app.controller("generalCtrl", function($scope, $http, $window){
     }
 
     $scope.deleteThisProduct = function(id,$index){
-        var url = 'https://api-product-demo.herokuapp.com/api/Product/'+id
+        var url = url_api+id
 
         $http.delete(url)
             .then(function success (res){
@@ -54,17 +53,17 @@ app.controller("generalCtrl", function($scope, $http, $window){
 
     $scope.sendData = function(){
         if ($scope.product._id == null){
-            var url = 'https://api-product-demo.herokuapp.com/api/Product/';
+            var url = url_api;
             addProduct(url);
         }
         else{
-            var url = 'https://api-product-demo.herokuapp.com/api/Product/'+$scope.product._id;
+            var url = url_api+$scope.product._id;
             updateProduct(url);
         }
     };
 
-    $scope.updateThisProduct = function(id, $index){
-        var url = 'https://api-product-demo.herokuapp.com/api/Product/'+id;
+    $scope.loadDataToUpdate = function(id, $index){
+        var url = url_api+id;
         $http.get(url)
             .then(function success (res){
                     console.log(res);
