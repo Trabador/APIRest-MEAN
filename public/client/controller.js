@@ -12,7 +12,7 @@ app.controller("generalCtrl", function($scope, $http, $window){
 
     console.log($scope.alert);
 
-    var url = 'http://localhost:8080/api/Product/';
+    var url = 'https://api-product-demo.herokuapp.com/api/Product/';
 
     $http.get(url)
         .then(function succes (res){
@@ -34,7 +34,7 @@ app.controller("generalCtrl", function($scope, $http, $window){
     }
 
     $scope.deleteThisProduct = function(id,$index){
-        var url = 'http://localhost:8080/api/Product/'+id
+        var url = 'https://api-product-demo.herokuapp.com/api/Product/'+id
 
         $http.delete(url)
             .then(function success (res){
@@ -54,17 +54,17 @@ app.controller("generalCtrl", function($scope, $http, $window){
 
     $scope.sendData = function(){
         if ($scope.product._id == null){
-            var url = 'http://localhost:8080/api/Product/';
+            var url = 'https://api-product-demo.herokuapp.com/api/Product/';
             addProduct(url);
         }
         else{
-            var url = 'http://localhost:8080/api/Product/'+$scope.product._id;
+            var url = 'https://api-product-demo.herokuapp.com/api/Product/'+$scope.product._id;
             updateProduct(url);
-        }    
+        }
     };
 
     $scope.updateThisProduct = function(id, $index){
-        var url = 'http://localhost:8080/api/Product/'+id;
+        var url = 'https://api-product-demo.herokuapp.com/api/Product/'+id;
         $http.get(url)
             .then(function success (res){
                     console.log(res);
